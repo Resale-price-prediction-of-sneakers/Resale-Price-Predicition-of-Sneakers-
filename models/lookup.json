@@ -1,0 +1,132 @@
+{
+  "2002R": {
+    "model_code": 0,
+    "brand": "New Balance",
+    "brand_code": 2
+  },
+  "574": {
+    "model_code": 1,
+    "brand": "New Balance",
+    "brand_code": 2
+  },
+  "990": {
+    "model_code": 2,
+    "brand": "New Balance",
+    "brand_code": 2
+  },
+  "Air Force 1": {
+    "model_code": 3,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Air Jordan 1": {
+    "model_code": 4,
+    "brand": "Air Jordan",
+    "brand_code": 0
+  },
+  "Air Jordan 11": {
+    "model_code": 5,
+    "brand": "Air Jordan",
+    "brand_code": 0
+  },
+  "Air Jordan 4": {
+    "model_code": 6,
+    "brand": "Air Jordan",
+    "brand_code": 0
+  },
+  "Air Max 1": {
+    "model_code": 7,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Air Max 270": {
+    "model_code": 8,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Air Max 90": {
+    "model_code": 9,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Air Max 95": {
+    "model_code": 10,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Air Max 97": {
+    "model_code": 11,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Air Max Plus": {
+    "model_code": 12,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Air VaporMax": {
+    "model_code": 13,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Blazer": {
+    "model_code": 14,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Chuck 70": {
+    "model_code": 15,
+    "brand": "Converse",
+    "brand_code": 1
+  },
+  "Dunk": {
+    "model_code": 16,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Dunk SB": {
+    "model_code": 17,
+    "brand": "Nike",
+    "brand_code": 3
+  },
+  "Forum": {
+    "model_code": 18,
+    "brand": "adidas",
+    "brand_code": 5
+  },
+  "Gazelle": {
+    "model_code": 19,
+    "brand": "adidas",
+    "brand_code": 5
+  },
+  "NMD Runner": {
+    "model_code": 20,
+    "brand": "adidas",
+    "brand_code": 5
+  },
+  "Samba": {
+    "model_code": 21,
+    "brand": "adidas",
+    "brand_code": 5
+  },
+  "Superstar": {
+    "model_code": 22,
+    "brand": "adidas",
+    "brand_code": 5
+  },
+  "UltraBoost": {
+    "model_code": 23,
+    "brand": "adidas",
+    "brand_code": 5
+  },
+  "Yeezy Boost 350": {
+    "model_code": 24,
+    "brand": "Yeezy",
+    "brand_code": 4
+  },
+  "Yeezy Slide": {
+    "model_code": 25,
+    "brand": "Yeezy",
+    "brand_code": 4
+  }
+}
