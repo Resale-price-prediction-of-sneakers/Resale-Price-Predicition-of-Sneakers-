@@ -40,7 +40,7 @@ docker run -p 8000:8000 mlops-lab
 ```
 Open http://localhost:8000/docs for the interactive docs.
 
-### Example requeest
+### Example request
 `POST /predict`
 
 ```json
