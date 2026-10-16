@@ -1,6 +1,6 @@
 # Resale-Price-Prediction-of-Sneakers
 
-![CI](https://github.com/Resale-Price-Prediction-of-Sneakers/Resale-Price-Prediction-of-Sneakers-/ons/workflows/ci-yml/badge.svg)
+![CI](https://github.com/Resale-price-prediction-of-sneakers/Resale-Price-Prediction-of-Sneakers-/actions/workflows/ci.yml/badge.svg)
 
 MLOps pipeline for real-time sneaker resale price prediction (GOAT + StockX data): data processing, model training, a FastAPI prediction service, Docker packaging and CI.
 
