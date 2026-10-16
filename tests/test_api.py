@@ -33,3 +33,14 @@ def test_predict_unknown_model_returns_404():
 def test_predict_missing_field_returns_422():
     r = client.post("/predict", json={"model": "x"})
     assert r.status_code == 422
+
+def test_predict_invalid_type_returns_422():
+    payload = _valid_payload(sorted(lookup)[0])
+    payload["lag_price"] = "not a number"
+    r = client.post("/predict", json=payload)
+    assert r.status_code == 422
+
+def test_predict_returns_positive_price():
+    model_name = sorted(lookup)[0]
+    r = client.post("/predict", json=_valid_payload(model_name))
+    assert r.json()["predicted_next_month_price"] > 0
