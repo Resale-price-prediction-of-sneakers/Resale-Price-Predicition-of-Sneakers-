@@ -89,5 +89,7 @@ docker compose up -d
 | Grafana | http://localhost:3000 |
 
 The Grafana dashboard has four panels: API Up, API Request Rate,
-Average Predicted Price and Memory Usage. Its JSON export is inoard has four panels: API Up, API Request Import it in Grafana via and Grafana run alongside the  Grafana data persists in a Docker volume,
-so do not runAPI with Docker Compose.
+Average Predicted Price and Memory Usage. Its JSON export is in
+`grafana/dashboards/api-dashboard.json`. Import it in Grafana via four panels: API Up, API Reque Grafana data persists in a Docker volume,
+so do not runst Rate,
+Average Predicted
