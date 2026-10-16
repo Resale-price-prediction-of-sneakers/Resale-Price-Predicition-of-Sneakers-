@@ -72,3 +72,22 @@ uv run pytest
 
 ## CI
 GitHub Actions runs the tests and builds the Docker image on every push and pull request.
+
+## Monitoring
+
+Prometheus and Grafana run alongside the API with Docker Compose.
+
+```
+docker compose up -d
+```
+
+| Service | URL |
+|---|---|
+| API docs | http://localhost:8000/docs |
+| Metrics | http://localhost:8000/metrics |
+| Prometheus | http://localhost:9090 |
+| Grafana | http://localhost:3000 |
+
+The Grafana dashboard has four panels: API Up, API Request Rate,
+Average Predicted Price and Memory Usage. Its JSON export is inoard has four panels: API Up, API Request Import it in Grafana via and Grafana run alongside the  Grafana data persists in a Docker volume,
+so do not runAPI with Docker Compose.
