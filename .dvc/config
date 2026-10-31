@@ -1,0 +1,4 @@
+[core]
+    remote = origin
+['remote "origin"']
+    url = https://dagshub.com/maythinkhaing.2004.sf/Resale-Price-Prediction-of-Sneakers-.dvc
