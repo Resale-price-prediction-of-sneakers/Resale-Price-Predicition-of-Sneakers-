@@ -5,13 +5,21 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import time
 from fastapi import Request, Response
-from prometheus_client import (Counter, Histogram, generate_latest, CONTENT_TYPE_LATEST,)
+from prometheus_client import (Counter, Gauge, Histogram, generate_latest, CONTENT_TYPE_LATEST,)
 
 
 app = FastAPI(title="Sneaker Resale Price API")
 model = joblib.load("models/model.pkl")
 with open("models/lookup.json") as f:
     lookup = json.load(f)
+
+# Training-data stats written by src/train.py (used for drift monitoring)
+try:
+    with open("models/baseline_stats.json") as f:
+        baseline = json.load(f)
+except FileNotFoundError:
+
+    baseline = None
 
 FEATURES = [
     "median_price_usd", "lag_price", "sales_recorded",
@@ -26,6 +34,21 @@ PREDICTED_PRICE = Histogram(
     buckets=[50, 100, 150, 200, 300, 500, 1000],
 )
 
+ERRORS = Counter("api_errors_total", "Responses with status 4xx/5xx", ["path", "status"])
+
+# Drift: compare live inputs with the training data.
+# Graph rate(input_median_price_usd_sum[5m]) / rate(input_median_price_usd_count[5m])
+# next to training_median_price_mean in Grafana.
+INPUT_PRICE = Histogram(
+    "input_median_price_usd", "median_price_usd sent to /predict",
+    buckets=[50, 100, 150, 200, 300, 500, 1000],
+)
+TRAIN_PRICE_MEAN = Gauge("training_median_price_mean", "Mean median_price_usd in training data")
+TRAIN_PRICE_STD = Gauge("training_median_price_std", "Std of median_price_usd in training data")
+if baseline:
+    TRAIN_PRICE_MEAN.set(baseline["median_price_usd"]["mean"])
+    TRAIN_PRICE_STD.set(baseline["median_price_usd"]["std"])
+
 @app.middleware("http")
 async def track_metrics(request: Request, call_next):
     start = time.time()
@@ -34,6 +57,9 @@ async def track_metrics(request: Request, call_next):
     if path != "/metrics":
         LATENCY.labels(path).observe(time.time() - start)
         REQUESTS.labels(path, str(response.status_code)).inc()
+
+    if response.status_code >= 400:
+        ERRORS.labels(path, str(response.status_code)).inc()
     return response
 
 class PriceInput(BaseModel):
@@ -63,7 +89,8 @@ def predict(data: PriceInput):
         raise HTTPException(404, f"Unknown model: {data.model}")
     if data.lag_price <= 0:
         raise HTTPException(422, "lag_price must be greater than 0")
-    
+
+    INPUT_PRICE.observe(data.median_price_usd)
     price_change = data.median_price_usd - data.lag_price
     row = pd.DataFrame([{
         "median_price_usd": data.median_price_usd,

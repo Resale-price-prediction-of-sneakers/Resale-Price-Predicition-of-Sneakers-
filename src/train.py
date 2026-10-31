@@ -11,6 +11,7 @@ from src.validate import validate
 PROCESSED_PATH = "data/processed/clean.csv"
 MODEL_PATH = "models/model.pkl"
 LOOKUP_PATH = "models/lookup.json"
+STATS_PATH = "models/baseline_stats.json"
 
 FEATURES = [
     "median_price_usd",      # current month price
@@ -81,8 +82,17 @@ def train():
     )
     with open(LOOKUP_PATH, "w") as f:
         json.dump(lookup, f, indent=2)
-    print("Saved: models/model.pkl, models/lookup.json")
 
+    baseline = {
+    "median_price_usd": {
+        "mean": float(train_df["median_price_usd"].mean()),
+        "std": float(train_df["median_price_usd"].std()),
+    }
+    }
+    
+    with open(STATS_PATH, "w") as f:
+       json.dump(baseline, f, indent=2)
+    print("Saved: models/model.pkl, models/lookup.json, models/baseline_stats.json")
 
 if __name__ == "__main__":
     train()

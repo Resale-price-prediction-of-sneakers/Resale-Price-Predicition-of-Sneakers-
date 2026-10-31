@@ -44,3 +44,16 @@ def test_predict_returns_positive_price():
     model_name = sorted(lookup)[0]
     r = client.post("/predict", json=_valid_payload(model_name))
     assert r.json()["predicted_next_month_price"] > 0
+
+def test_metrics_include_monitoring_metrics():
+    client.post("/predict", json=_valid_payload(sorted(lookup)[0]))
+    text = client.get("/metrics").text
+    assert "api_requests_total" in text
+    assert "api_request_latency_seconds" in text
+    assert "input_median_price_usd_count" in text
+    assert "training_median_price_mean" in text
+
+def test_errors_are_counted():
+    client.post("/predict", json=_valid_payload("NOT_A_MODEL"))
+    text = client.get("/metrics").text
+    assert 'api_errors_total{path="/predict",status="404"}' in text
