@@ -115,7 +115,7 @@ docker compose up -d
 | Prometheus | http://localhost:9090 |
 | Grafana | http://localhost:3000 |
 
-The Grafana dashboard has four panels: API Up, API Request Rate, Average Predicted Price and Memory Usage. 
+The Grafana dashboard has seven panels: API Up, API Request Rate, Average Predicted Price, Memory Usage, Error Rate, Latency (p95) and Drift (average live input price vs. the training mean).
 Its JSON export is in `grafana/dashboards/api-dashboard.json`. 
 Grafana data persists in a Docker volume, so do not run docker compose down -v.
 
