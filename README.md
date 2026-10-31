@@ -91,3 +91,17 @@ docker compose up -d
 The Grafana dashboard has four panels: API Up, API Request Rate, Average Predicted Price and Memory Usage. 
 Its JSON export is in `grafana/dashboards/api-dashboard.json`. 
 Grafana data persists in a Docker volume, so do not run docker compose down -v.
+
+## Results
+
+Time-split evaluation: The last 3 months are held out for testing (442 train rows, 78 test rows). The baseline predicts that next month’s price equals the current month’s price.
+
+| Model | MAE (USD) |
+|---|---|
+| Baseline | 5.29 |
+| XGBoost | 5.27 |
+
+The model is only slightly better than the baseline. The dataset is
+small, so the focus of this project is the MLOps pipeline (tracking,
+API, Docker, CI, monitoring) rather than model accuracy. Future work:
+more data, more features, hyperparameter tuning.
