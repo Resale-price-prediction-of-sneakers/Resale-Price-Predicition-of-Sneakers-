@@ -1,12 +1,20 @@
+import os
+
 import pandas as pd
+import pytest
 
 from src.data import MODEL_TO_BRAND, make_features
 
+RAW_MODEL_PRICES = "data/raw/sneakerpulse_model_monthly_prices.csv"
 
+
+@pytest.mark.skipif(
+    not os.path.exists(RAW_MODEL_PRICES),
+    reason="Raw data is tracked by DVC and not available in CI",
+)
 def test_every_model_has_brand():
-    raw = pd.read_csv("data/raw/sneakerpulse_model_monthly_prices.csv")
+    raw = pd.read_csv(RAW_MODEL_PRICES)
     assert set(raw["model"]) <= set(MODEL_TO_BRAND)
-
 
 def test_make_features_lag_and_target():
     df = pd.DataFrame({
