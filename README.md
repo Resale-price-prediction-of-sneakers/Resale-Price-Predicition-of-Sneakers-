@@ -19,12 +19,22 @@ docker-compose.yml, prometheus.yml   API + Prometheus + Grafana
 ## Data
 
 Monthly sneaker resale prices from GOAT and StockX:
-`sneakerpulse_brand_monthly.csv`, `sneakerpulse_model_monthly_price.csv`,`sneakerpulse_same_shoe_12m.csv` (in `data/raw/`). The cleaned and merged table used for training is `data/processed/clean.csv`.
+`sneakerpulse_brand_monthly.csv`, `sneakerpulse_model_monthly_price.csv`,
+`sneakerpulse_same_shoe_12m.csv` (in `data/raw/`). The cleaned and merged 
+table used for training is `data/processed/clean.csv`.
 
-Features: current median price, previous month price (lag), sales recorded, brand mean price, month number, price change and price change %.
+Features: current median price, previous month price (lag), sales recorded, 
+brand mean price, month number, price change and price change %.
 Target: next-month resale price.
 
 Raw data is versioned with DVC (`data/raw.dvc`). No DVC remote is configured yet.
+
+## Data validation
+src/validate.py checks clean.csv before every training run: prices are > 0, 
+no nulls, month is YYYY-MM, every model is in MODEL_TO_BRAND with the right 
+brand, and there are no duplicate (model, month) rows. If a check fails, 
+src.train stops before training. Run it alone with: 
+`uv run python -m src.validate`
 
 ## Setup
 Requires [uv](https://docs.astral.sh/uv/) and Python 3.11.
@@ -122,5 +132,5 @@ The model is only slightly better than the baseline. The dataset is small, so th
 
 ## Future work
 
-More data and features, hyperparameter tuning, data and prediction drift monitoring, and a DVC remote so CI can pull the raw data.
+More features, hyperparameter tuning, prediction drift monitoring, and a DVC remote so CI can pull the raw data.
 

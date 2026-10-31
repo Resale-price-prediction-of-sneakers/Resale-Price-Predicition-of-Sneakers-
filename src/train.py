@@ -6,6 +6,7 @@ import mlflow
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
 from xgboost import XGBRegressor
+from src.validate import validate
 
 PROCESSED_PATH = "data/processed/clean.csv"
 MODEL_PATH = "models/model.pkl"
@@ -26,7 +27,7 @@ TEST_MONTHS = 3  # hold out the last 3 months for testing
 
 
 def train():
-    df = pd.read_csv(PROCESSED_PATH).sort_values("month")
+    df = validate(path=PROCESSED_PATH).sort_values("month")
     df["price_change"] = df["median_price_usd"] - df["lag_price"]
     df["price_change_pct"] = df["price_change"] / df["lag_price"]
 
