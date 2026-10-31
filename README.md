@@ -33,7 +33,7 @@ Raw data is versioned with DVC (`data/raw.dvc`). No DVC remote is configured yet
 `src/validate.py` checks `clean.csv` before every training run: prices are > 0, 
 no nulls, month is YYYY-MM, every model is in MODEL_TO_BRAND with the right 
 brand, and there are no duplicate (model, month) rows. If a check fails, 
-src.train stops before training. Run it alone with: 
+`src.train` stops before training. Run it alone with: 
 `uv run python -m src.validate`
 
 ## Setup
@@ -87,7 +87,7 @@ Response:
   "predicted_change": -1.55
 }
 ```
-`predicted_change` = `predicted_next_month_price` - `mediam_price_usd`.
+`predicted_change` = `predicted_next_month_price` - `median_price_usd`.
 
 Unknown model names return `404`; invalid input returns `422`.
 
@@ -132,5 +132,5 @@ The model is only slightly better than the baseline. The dataset is small, so th
 
 ## Future work
 
-More features, hyperparameter tuning, prediction drift monitoring, and a DVC remote so CI can pull the raw data.
+More features, hyperparameter tuning, and a DVC remote so CI can pull the raw data.
 
