@@ -9,10 +9,22 @@ MLOps pipeline for real-time sneaker resale price prediction (GOAT + StockX data
 src/        data.py (features), train.py (training), api.py (FastAPI service)
 tests/      pytest tests for data and API
 models/     model.pkl, lookup.json
-data/       raw and processed CSV files
+data/       raw (tracked by DVC) and processed CSV files
+grafana/    dashboard JSON export
 Dockerfile  container image for the API
+docker-compose.yml, prometheus.yml   API + Prometheus + Grafana
 .github/    CI workflow (tests + Docker build)
 ```
+
+## Data
+
+Monthly sneaker resale prices from GOAT and StockX:
+`sneakerpulse_brand_monthly.csv`, `sneakerpulse_model_monthly_price.csv`,`sneakerpulse_same_shoe_12m.csv` (in `data/raw/`). The cleaned and merged table used for training is `data/processed/clean.csv`.
+
+Features: current median price, previous month price (lag), sales recorded, brand mean price, month number, price change and price change %.
+Target: next-month resale price.
+
+Raw data is versioned with DVC (`data/raw.dvc`). No DVC remote is configured yet.
 
 ## Setup
 Requires [uv](https://docs.astral.sh/uv/) and Python 3.11.
@@ -24,8 +36,11 @@ uv sync
 ```
 uv run python -m src.train
 ```
+An XGBoost model predicts the price change for next month. The last 3 months are held out for testing, and the baseline assumes next month’s price equals this month’s price. Runs are logged with MLflow (experiment `sneaker-resale`):
 
-The model is evaluated with MAE against a baseline.
+    uv run mlflow ui —backend-store-uri sqlite:///mlflow.db
+
+Results are in the Results section below.
 
 ## Run the API
 Locally:
@@ -62,6 +77,7 @@ Response:
   "predicted_change": -1.55
 }
 ```
+`predicted_change` = `predicted_next_month_price` - `mediam_price_usd`.
 
 Unknown model names return `404`; invalid input returns `422`.
 
@@ -69,6 +85,7 @@ Unknown model names return `404`; invalid input returns `422`.
 ```
 uv run pytest
 ```
+One test needs the raw data and is skipped when it is not available (for example in CI).
 
 ## CI
 GitHub Actions runs the tests and builds the Docker image on every push and pull request.
@@ -101,7 +118,9 @@ Time-split evaluation: The last 3 months are held out for testing (442 train row
 | Baseline | 5.29 |
 | XGBoost | 5.27 |
 
-The model is only slightly better than the baseline. The dataset is
-small, so the focus of this project is the MLOps pipeline (tracking,
-API, Docker, CI, monitoring) rather than model accuracy. Future work:
-more data, more features, hyperparameter tuning.
+The model is only slightly better than the baseline. The dataset is small, so the focus of this project is the MLOps pipeline (tracking, API, Docker, CI, monitoring) rather than model accuracy. 
+
+## Future work
+
+More data and features, hyperparameter tuning, data and prediction drift monitoring, and a DVC remote so CI can pull the raw data.
+
