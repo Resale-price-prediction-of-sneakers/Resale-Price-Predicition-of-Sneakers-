@@ -20,6 +20,13 @@ jobs:
         - name: Install dependencies
           run: uv sync --frozen
 
+        - name: Pull data from DVC remote
+          run: |
+            uv run dvc remote modify origin --local auth basic
+            uv run dvc remote modify origin --local user ${{ secrets.DAGSHUB_USER }}
+            uv run dvc remote modify origin --local password ${{ secrets.DAGSHUB_TOKEN }}
+            uv run dvc pull
+
         - name: Run tests
           run: uv run pytest    
 
