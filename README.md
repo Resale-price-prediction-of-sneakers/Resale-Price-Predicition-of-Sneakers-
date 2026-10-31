@@ -27,7 +27,7 @@ Features: current median price, previous month price (lag), sales recorded,
 brand mean price, month number, price change and price change %.
 Target: next-month resale price.
 
-Raw data is versioned with DVC (`data/raw.dvc`). No DVC remote is configured yet.
+Raw data is versioned with DVC (`data/raw.dvc`) and stored on a DagsHub remote. CI runs dvc pull before the tests.
 
 ## Data validation
 `src/validate.py` checks `clean.csv` before every training run: prices are > 0, 
@@ -95,7 +95,7 @@ Unknown model names return `404`; invalid input returns `422`.
 ```
 uv run pytest
 ```
-One test needs the raw data and is skipped when it is not available (for example in CI).
+All 16 tests run in CI, including the one that needs the raw data.
 
 ## CI
 GitHub Actions runs the tests and builds the Docker image on every push and pull request.
@@ -132,5 +132,4 @@ The model is only slightly better than the baseline. The dataset is small, so th
 
 ## Future work
 
-More features, hyperparameter tuning, and a DVC remote so CI can pull the raw data.
-
+More features and hyperparameter tuning.
